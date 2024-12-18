@@ -5,30 +5,31 @@
 #include "BaseClass.h"
 
 #include <string>
+#include <memory>
 
 class Player {
 public:
 	// Default Constructor
 	Player() { 
 		name = "Default";
-		playerClass = BaseClass();
+		playerClass = std::make_unique<BaseClass>(BaseClass());
 	}
 
 	// Overloaded Constructor
 	Player(std::string newName, BaseClass newClass) {
 		name = newName;
-		playerClass = newClass;
+		playerClass = std::make_unique<BaseClass>(newClass);
 	}
 
 	// Setters
 	void setName(std::string newName) { name = newName; }
-	void setClass(BaseClass newClass) { playerClass = newClass; }
+	void setClass(BaseClass newClass) { playerClass = std::make_unique<BaseClass>(newClass); }
 
 	// Getters
 	auto getName() const { return name; }
-	auto getPlayerClass() const { return playerClass; }
+	auto getPlayerClass() const { return &playerClass; }
 
 private:
 	std::string name;
-	BaseClass playerClass;
+	std::unique_ptr<BaseClass> playerClass;
 };
