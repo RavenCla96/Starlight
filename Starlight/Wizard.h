@@ -4,7 +4,7 @@
 
 #include "BaseClass.h"
 
-class Wizard : public BaseClass {
+class Wizard : protected BaseClass {
 public:
 	// Default Constructor
 	Wizard() { 
@@ -19,4 +19,6 @@ public:
 		addSkill(defaultSkill);
 		addSkill(fireballSkill);
 	}	
+
+	
 };

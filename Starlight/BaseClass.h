@@ -17,9 +17,20 @@ public:
 		health = 0;
 	}
 
+	// Overloaded Constructor
+	BaseClass(std::string name, int startHealth, std::vector<Skill> newSkills) {
+		level = 1;
+		setClassName(name);
+		setInitialHealth(startHealth);
+		for (auto& skill : newSkills) {
+			addSkill(skill);
+		}
+	}
+
 	// Setters
 	void incrementLevel() { ++level; }
 	void setInitialHealth(int initialHealth) { health = initialHealth; }
+	void modifyHealth(int damageTaken) { health -= damageTaken; }
 	void setClassName(std::string newClassName) { className = newClassName; }
 	void addSkill(Skill newSkill) {	skillList.push_back(newSkill); }
 

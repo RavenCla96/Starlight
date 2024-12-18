@@ -3,10 +3,14 @@
 #include "Controller.h"
 #include <iostream>
 
-int main() {
-	Controller::startGame();
+using namespace std;
 
-	std::cout << "\nThank you for playing!\n";
+int main() {
+	std::cout << "-- Welcome to Starlight -- " << endl;
+
+	Controller::menu();
+
+	std::cout << "\nThank you for playing!" << endl;
 
 	return 0;
 }
