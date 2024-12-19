@@ -6,7 +6,15 @@
 
 using namespace std;
 
-void Controller::playLevel1(Player &player) {
+void Controller::gameOver() {
+	std::cout << "Trajedy has struck -- You DIED! " << endl;
+}
+
+void Controller::winGame() {
+	std::cout << "The realm is safe -- You WIN!" << endl;
+}
+
+bool Controller::playLevel1(Player &player) {
 	// Create Level 1 obj
 	Level_1 level_1{};
 	int encounter = 1;
@@ -14,9 +22,20 @@ void Controller::playLevel1(Player &player) {
 	for (auto& enemy : level_1.getEnemyList())
 	{
 		std::cout << " -- Encounter " << encounter << "/" << level_1.getEnemyList().size() << " --" << endl;
-		Combat::battle(player, enemy);
+		auto success = Combat::battle(player, enemy);
+		if (!success) {
+			return false;
+		}
 		++encounter;
 	}
+	return true;
+}
+
+std::vector<bool(*)(Player& player)> Controller::buildLevelList() {
+	std::vector<bool(*)(Player& player)> levelList;
+	levelList.push_back(Controller::playLevel1);
+
+	return levelList;
 }
 
 BaseClass Controller::getPlayerClass() {
@@ -53,15 +72,28 @@ std::string Controller::getPlayerName() {
 	return userInput;
 }
 
-void Controller::startGame() {
+int Controller::startGame() {
 	auto playerName = getPlayerName();
 	auto playerClass = getPlayerClass();
 
 	Player player = Player(playerName, playerClass);
 
-	// Level 1
-	playLevel1(player);
+	// Build vector of levels
+	auto levels = buildLevelList();
 
+	bool success;
+
+	for (const auto& level : levels) {
+		success = level(player);
+		// Check if player won or lost
+		if (!success) {
+			gameOver();
+			return 1;
+		}
+	}
+
+	winGame();
+	return 0;
 }
 
 void Controller::displayMenuOptions() {

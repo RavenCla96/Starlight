@@ -37,11 +37,22 @@ void Combat::enemyTurn(Player &currentPlayer, const Enemy &currentEnemy) {
 	std::cout << endl;
 }
 
-void Combat::battle(Player &currentPlayer, Enemy &currentEnemy) {
+bool Combat::battle(Player &currentPlayer, Enemy &currentEnemy) {
 	while (currentPlayer.getPlayerClass()->get()->getHealth() > 0 && currentEnemy.health > 0)
 	{
 		battleHUD(currentPlayer, currentEnemy);
 		playerTurn(currentPlayer, currentEnemy);
-		enemyTurn(currentPlayer, currentEnemy);
+		if (currentEnemy.health > 0) {
+			enemyTurn(currentPlayer, currentEnemy);
+		}
+	}
+	if (currentEnemy.health <= 0)
+	{
+		std::cout << "\n-- Enemy Slain -- " << endl;
+		std::cout << endl;
+		return true;
+	}
+	else {
+		return false;
 	}
 }
